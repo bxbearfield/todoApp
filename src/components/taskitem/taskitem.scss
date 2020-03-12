@@ -1,0 +1,818 @@
+//---SECTIONS-----
+//- CALENDAR SCROLL: - 
+//- CALENDAR: -
+//- ADD TASK FORM: -
+//- ALERTS: -
+//- TASKS: -
+//- TASK MANAGER: (dynamic div) -
+//- ADD USER FORM: -
+//- USER LABELS: -
+//- USER DIVS: -
+//- ICONS: -
+//- GENERAL CLASSES: -
+//-----------------
+* {
+    margin: 0;
+    padding: 0;
+}
+@mixin flexCenter($dir) {
+    display: flex;
+    flex-direction: $dir;
+    align-items: center;
+}
+@mixin flex($dir) {
+    display: flex;
+    flex-direction: $dir;
+}
+
+a {
+    color: inherit;
+}
+    a:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+select {
+    font-family: 'Font Awesome 5 Free', 'helvetica neue';
+    font-weight: 900;
+    margin: 3px 4px;
+    color: #cac8c8;
+    font-weight: lighter;
+    font-size: 22px;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    direction: rtl; /* Align options rt to lt */
+    /* Remove select box arrows cross-browser */
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+}
+
+input:focus, 
+select:focus,
+textarea:focus {
+    outline: none;
+}
+button:hover{
+    cursor: pointer;
+}
+textarea {
+    resize: none;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    white-space:normal;
+
+    &::placeholder {
+        font-weight: lighter;
+        color: #cfcfcf;
+    }
+}
+input::placeholder {
+    font-weight: lighter;
+    color: #ece8e8;
+}
+div.home {
+    display: flex;
+
+    & div.flexTaskCal{
+        flex: 1;
+        @include flex(row);
+    }
+}
+    
+div.taskListTitle {
+    font-size: 35px;
+    font-weight: lighter;
+    color: #a09f9f;
+    text-align: center;
+    cursor: pointer;
+}
+    textarea.textAlignCenter {
+        text-align: center;
+        overflow: hidden;
+    }
+
+div.todoWrapper {
+    background: #ececec;
+    width: 70%;
+    max-width: 800px;
+    margin: 0 auto;
+    @include flex(column);
+    flex: .7;
+    box-shadow: 0px 0px 6px 1px inset gray;
+    overflow-y: scroll;
+
+    div.landingPane {
+        line-height: 160%;
+        margin: auto;
+        text-align: center;
+        font-size: 30px;
+        font-weight: lighter;
+        color: #a09f9f;
+        cursor: pointer;
+    }
+}
+
+div.task, 
+div.addTask, 
+div.taskManager {
+    display: flex;
+    margin-bottom: 1px;
+    padding: 1px;
+    background: #fdfdfd;
+    font-weight: lighter;
+    color: #a09f9f;
+    font-size: 22px;
+    align-items: center;
+}
+
+header{
+    @include flexCenter(row);
+    padding: 0 10px; 
+    box-shadow: 0px 1px 3px 1px #bebebe;
+
+
+    div.welcomeMsg {
+        flex: 1;
+        font-size: 22px;
+        letter-spacing: 2px;
+        color: #a09f9f;
+    }
+
+    div.logBtns{
+        
+        button {
+            margin:2px;
+            background-color: inherit;
+            color: #cacaca;
+            padding: 3px 5px;
+            border-radius: 4px;
+            border: none;
+            font-weight: 100;
+            letter-spacing: 1px;
+            box-shadow: 0px 0px 3px 1px inset #bebebe;
+            &:focus {outline: none;}
+            &:active {
+                box-shadow: 0px 0px 2px 2px inset #d6d6d6;
+                outline: none;
+                padding: 2px 4px;
+                border: 1px solid #a09f9f;
+            }
+        }
+    }
+}
+/* ----------------------------------------- CALENDAR SCROLL: -------------------------------------------------------------------------*/
+div.calendarScroll {
+    height: 100vh;
+    max-width: 130px;
+    @include flex(column);
+    font-size: 32px;
+    background-color: #f8f8f8;
+    color: #a09f9f;
+    padding-top: 3px;
+    border-top: 1px #a09f9f solid;
+    border-left: 1px #a09f9f solid;
+    border-bottom: 1px #a09f9f solid;
+
+    div {
+        @include flexCenter(column);
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    div.monthsDiv {
+        overflow-y: scroll;
+        padding: 3px 3px;
+        background-color: white;
+        border-top: 2px solid #a09f9f;
+        margin-top: 3px;
+
+        div.monthDiv {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 6px;
+            background: #f2f2f2;
+            border-radius: 6px;
+            box-shadow: 0px 0px 4px 3px inset #a7a6a6;
+            
+            &:hover{
+                color: rgb(194, 197, 189);
+                background-color: #f5f4f4;
+            }
+            &:active {
+                box-shadow: 0px 0px 7px 1px inset #818181;
+                outline: none;
+                padding-top: 18px;
+                padding-bottom: 18px;
+                border: 2px solid #a09f9f
+            }
+        }
+
+        div.selectedMonth {
+            color: yellowgreen;
+            outline: none;
+            &:hover{
+                color: yellowgreen;
+                background: #f1f1f1;
+            }
+        }
+    }
+    
+    /* Fontawesome calendars in calendar scroll */
+    div span {
+        font-size: 52px;
+    }
+
+    div.yearDiv {
+        flex-direction: row;
+        justify-content: center;
+        background: #f1f1f1;
+        margin: 3px 3px;
+        box-shadow: 0px 0px 3px 2px inset #aaaaaa;
+        border-radius: 6px;
+
+        &:active {
+            box-shadow: 0px 0px 5px 1px inset #818181;
+            outline: none;
+        }
+        span {
+            font-size: 32px;
+            margin: 0 8px;
+        }
+    }
+}
+        
+/* ----------------------------------------- CALENDAR: -------------------------------------------------------------------------*/
+div.home {
+    position: relative;
+    height:100vh;
+
+    div.calendar {
+        flex: .75;
+        display: flex;
+        flex-direction: column;
+
+        div.dates {
+            flex: 1;
+            color: yellowgreen;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: 5% repeat(5, 19%);
+            border-bottom: 1px solid #ececec;
+            
+            div.weekday {
+                padding: 5px;
+                color: #a09f9f;
+                letter-spacing: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            > div {
+                border-left: 1px solid #ececec;
+                border-bottom: 1px solid #ececec;
+                padding: 0 2px;
+            }
+
+           div.dateDiv {
+                cursor: pointer;
+                padding: 2px 3px 0px 4px;
+                &:hover {
+                    box-shadow: 0px 0px 6px -.8px gray;
+                }
+
+                &.selectedDate, &.selectedDate:hover {
+                    box-shadow: 0px 0px 8px 1px yellowgreen;
+                    outline: none;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+                
+                div.todaysDate {
+                    background-color: red;
+                    color: white;
+                    border-radius: 100%;
+                    padding: 2px 3px 2px 2px;
+                    display: inline;
+                }
+                &:nth-child(even){
+                    div.listTitle {
+                        font-size: 11px;
+                        color: gray;
+                        margin-bottom: 2px;
+                        padding: 0 2px;
+                        &:nth-child(even){
+                            background-color: rgb(181, 255, 255);
+                        }
+                        &:nth-child(odd){
+                            background-color: lightcyan;
+                        }
+                        &:hover {
+                            color:rgb(203, 203, 203);
+                        }
+                        .clickedList{
+                            color: yellow;
+                        }
+                    }
+                }
+                &:nth-child(odd){
+                    div.listTitle {
+                        font-size: 11px;
+                        color: gray;
+                        margin-bottom: 2px;
+                        padding: 0 2px;
+                        &:nth-child(even){
+                            background-color: rgb(189, 245, 77);
+                        }
+                        &:nth-child(odd){
+                            background-color: rgba(189, 245, 77, .5);
+                        }
+                        &:hover {
+                            color: rgb(203, 203, 203);
+                        }
+                        .clickedList{
+                            color: yellow;
+                        }
+                    }
+                }
+            }
+                
+            div.monthsDiv {
+                div.monthDiv:focus {
+                    color: yellowgreen;
+                    outline: none;
+                }
+            }
+
+            /* Dates shown of previous and following months */
+            div.calPadding {
+                color: #e0dede;
+            }
+        }
+    }
+} 
+/*  ---------------------------------------- ADD TASK FORM: ----------------------------------------------------------------------------*/
+div.addTask{ /* Has flex up above */
+    color: #ececec; 
+    margin-bottom: 2px;
+    padding-right: 25px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+    div.addTaskFields {/* Excludes down arrow and user icon */
+        flex: 1;
+        display: flex;
+    
+        div input{ /* 'Add task' input */
+            width: 100%;
+            font-size: 25px;
+            border: none;
+            background: inherit;
+            color: #a09f9f;
+            font-weight: lighter;
+        }
+
+        div.taskInputDiv{
+            flex: .88;
+            margin-right: 9px;
+        }
+
+        div.hoursDiv::after{
+            content: ':';
+            color: #b3b0b0;
+        }
+    }
+}       
+
+/* ----------------------------------------- ALERTS: -------------------------------------------------------------------------*/
+div.alertModal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0px;
+    left: 0px;
+    @include flexCenter(column);
+    justify-content: center;
+    
+    &.signOut {
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    
+    div.alertBox {
+        width: 40%;
+        background-color: white;
+        box-shadow: 0px 3px 10px .5px gray;
+        border-radius: 4px;
+        padding: 15px 10px;
+        font-size: 14px;
+        @include flex(column);
+        animation: createBox .35s;
+        @keyframes createBox {
+            from {
+              transform: scale(0); opacity: 0;
+            }
+            to {
+              transform: scale(1); opacity: 1;
+            }
+        }
+
+        div.alertMsg {margin-bottom: 20px}
+
+        div.dbButtons {
+            flex-basis: 1;
+            margin-left: auto;
+            button:nth-of-type(1) { 
+                color: rgb(0, 68, 255);
+            }
+            button:nth-of-type(2) {
+                background-color:  rgb(0, 68, 255); 
+                color: white;
+            }
+            
+        }
+        button {
+            padding: 5px;
+            width: 72px;
+            margin: 0 6px 0 0;
+            border-radius: 4px;
+            &:focus{outline:none;}
+            
+        }
+
+        input {
+            margin: 3px 9px 0 20px;
+        }
+    }
+}
+/* ----------------------------------------- TASKS: -------------------------------------------------------------------------*/
+div.taskList {
+    margin: 25px auto 50px auto;
+    width: 65%;
+    min-width: 257px;
+    
+    div.taskListDate {
+        text-align: center;
+        color: #a09f9f;
+        margin-bottom: 5px;
+        @include flexCenter(column);
+    }
+
+    div.task {
+        cursor: move; /* indicate draggability */
+        display: block;
+
+        div.taskItem { /* Div containing check-circle, task, time, closeIcon */
+            display: flex;
+            align-items: center;
+
+            div.displayDiv {
+                flex: 1;
+                display: flex;
+                line-height: 1.4;
+
+                div.displayText {
+                    flex: 1;
+                    -ms-word-wrap: break-word;
+                    word-wrap: break-word;
+                    white-space:normal;
+                }
+                &.inactiveText {
+                    text-decoration: line-through;
+                    color: #e4e0e0;
+                }
+            }
+
+            div.taskTime { 
+                /* Task item time wrapper */
+                margin: 0 10px;
+                width: 56.22px;
+                display: flex;
+                justify-content: flex-end;
+
+                div.hoursDiv {
+                    &::after{
+                        content: ':';
+                    }
+                }
+                select{ 
+                    /* Task item time hrs/mins */
+                    margin: 2px 0px;
+
+                    .editTime{
+                        background-color: #f7f7f7;
+                        padding: 0;
+                    }
+                }
+            }
+
+            div.editUsers { 
+                position: relative;
+
+                div.editUserIcon {
+                    position: absolute;
+                    font-size: 16px;
+                    top: 0;
+                    margin-top: 10px;
+                    margin-left: 3.5px;
+                    cursor: pointer;
+                }
+        
+                div.addMoreUsersDiv {
+                    color: #a09f9f;
+                    letter-spacing: 1px;
+                    font-weight: 400;
+                    padding: 2px;
+                    position: absolute;
+                    font-size: 8px;
+                    background: #fdfdfd;
+                    border-radius: 3px;
+                    left: -5px;
+                    margin-top: -15px;
+                    box-shadow: 3px 3px 10px #a09f9f;
+
+                    div.optionalUser {
+                        span.optUserLabel {
+                            margin-right: 3px;
+                        }
+                    }
+                }   
+            }          
+        }
+
+        div.assignedUsers{ /* Displayed user group in task */
+            margin-left: 45px;
+            margin-top: -14px;
+
+            span.assignedUser{ /* Displayed individual users in task */
+                margin-right: 3px;
+                font-size: 13px;
+
+                span.assignedLabel .removeUserIcon {
+                    cursor: pointer;
+                }
+            }
+            span.assignedName{ /* Displayed individual user name in task item */
+                margin-right: 15px;
+                margin-left: 3px;
+                letter-spacing: 1.2px;
+                font-weight: 200;
+            }
+        }
+    }
+}
+/* For title & task textareas */    
+div.taskText {
+    display: flex;
+    flex: 1;
+    line-height: 1.4;
+
+    div.ghostEditDiv{ 
+        @include flex(column);
+        position: relative;
+        flex: 1;
+
+        textarea {
+            overflow: none;
+            position: absolute;
+            border: none;
+            background: inherit;
+            color: #a09f9f;
+            font-weight: lighter;
+        }
+
+        div.ghostDiv { 
+            flex: 1;
+            visibility: hidden;
+            -ms-word-wrap: break-word;
+            word-wrap: break-word;
+            white-space:normal;
+        }
+    }        
+}      
+/* ------------------------------------- TASK MANAGER: (dynamic div) ---------------------------------------------------*/
+div.taskManager {
+    @include flex(row);
+    font-size: 14px;
+    margin: 2px 0;
+    padding: 3px;
+    height: 27px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+
+    /* SPAN - Add spacing to filters and span title elements w/i the Task Manager */
+    span {
+        // margin-right: 25px;
+        padding: 0px 3px;
+        color: inherit;
+        flex-basis: 32%;
+        line-height: 10px;
+        
+    }
+    /* Add border when focusing on links in Task Manager */
+    
+    div.taskOptions {
+        @include flex(row);
+        margin-right: 10px;
+
+        div.taskOption {
+            margin: 0px 10px;
+            padding: 0px 3px;
+            color: inherit;
+            
+            &.clicked {
+                padding: 0px 2px;
+                border: 1px solid #a09f9f;
+                border-radius: 4px;
+            }
+            &.inactive {
+                color: #e0dede;
+            }
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        
+        &.completed{
+            margin-right: 3.5em;
+        }
+    }
+}
+       
+div.saveDeleteBtns {
+    width: 118px;
+    margin: 5px auto;
+
+    button {
+        padding: 1px 5px;
+        margin-right: 5px;
+        color: white;
+        background-color: rgb(0, 68, 255);
+        border-radius: 4px;
+        font-size: 14px;
+        &:focus{outline:none;}
+    }
+}
+
+/*  ----------------------------------------- ADD USER FORM: --------------------------------------------------------------------------*/
+div.userIconDiv{
+    display: inline;
+    color: #cac8c8;
+    cursor: pointer;
+}
+
+div.addUserDiv{ /* Dynamic div used to add/select persons to assign to task */
+    font-size: 12px;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    border: 1px solid #a09f9f;
+    border-radius: 7px;
+    box-shadow: -1px 1px 12px #c4c4c4;
+}
+        div.userInputDiv {display: inline;}
+        div.addUserFormDiv input{
+            color: #a09f9f;
+            width: 120px;
+            margin: 2px 0 2px 0;
+            padding: 0 4px;
+            border: none;
+        }
+        div.addUserFormDiv button{
+            padding:3px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+/*  ---------------------------------------- USER LABELS: --------------------------------------------------------------------------*/              
+div.labelDiv {
+    padding: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 67px;
+    margin-left: 120px;
+    position: absolute;
+    background-color:#cac8c8;
+    box-shadow: -3px 3px 10px #a09f9f;
+    border-radius: 10%;
+    z-index: 2;
+
+    div.eachLabelDiv {
+        padding:1px 4px;
+        border-radius: 50%;
+        margin: 1px;
+
+        &:hover {
+            background-color: rgb(150, 150, 150);
+            
+        }
+        &.highlightBlue{
+            color: white;
+            background-color: rgb(37, 147, 250);
+            //background-color: rgb(143, 200, 253);
+            outline: none;
+
+            &:hover {
+                background-color: rgb(37, 147, 250);
+            }
+        }
+    }
+}
+        
+/*  ---------------------------------------- USER DIVS: --------------------------------------------------------------------------*/
+div.userDivs{ 
+    /*  Each individual user option */
+    border-bottom: 1px dashed gray;
+    padding: 4px 3px;
+    color: #a09f9f;
+    position: relative;
+
+    /*  Add top border to first user div */
+    &.firstUserDiv{border-top: 2px solid #a09f9f;}
+    
+    /*  Remove bottom border to last user div */
+    &:last-child{border-bottom:none;} 
+
+    &:hover {
+        opacity: .4;
+        background-color: rgb(0, 132, 255);
+        color: white;
+    }
+    span.userNames {
+        margin-left: 5px;
+    }
+    span.userRemove {
+        position: absolute;
+        right: 0;
+        top: auto;
+        color: red;
+    }
+    &.highlightBlue{
+        color: white;
+        background-color: rgb(143, 200, 253);
+        outline: none;
+
+        &:hover {
+            background-color: rgb(143, 200, 253);
+        }
+    }
+}
+       
+/*  ---------------------------------------- ICONS: --------------------------------------------------------------------------*/
+div.checkIcon, div.arrowIcon {
+    color: #ececec;
+    padding-right: 10px;
+    padding-left: 3px;
+    cursor: pointer;
+}
+
+div.checkIcon{
+    font-size: 30px;
+}
+.taskCheck {
+    color: rgb(133, 170, 133);
+    font-size: 18px;
+    margin: -35px 0 8px 4px;
+}
+div.taskItem div.pencilIcon,
+div.taskItem div.closeIcon,
+div.userDivs span.userRemove{
+    margin-right: 4px;
+    color: #ececec; 
+    visibility: hidden;
+}
+/* On hover display times and pencil icons hidden in div */
+div.taskItem:hover div.closeIcon,
+div.taskItem:hover div.pencilIcon,
+div.userDivs:hover span.userRemove { 
+    visibility: visible;
+    cursor: pointer;
+    
+}
+div.taskItem div.pencilIcon{
+    
+    &.hidden{
+        visibility: hidden;
+    }
+}
+
+
+/*  --------------------------------------- GENERAL CLASSES: --------------------------------------------------------------------------*/
+div.highlightAqua { /* Would not work with .class only..? */
+    background: rgb(195, 255, 235);
+}
+.white {
+    color: white;
+}
+.hideDisplay {
+    display: none;
+}
+.hidden {
+    visibility: hidden;
+}

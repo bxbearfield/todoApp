@@ -11,7 +11,7 @@ class userAuth extends Component {
         formData: {
             email:{
                 element:'input',
-                value: '',
+                value: 'kkk@gmail.com',
                 containerConfig: {
                     className: 'emailInputDiv'
                 },
@@ -34,7 +34,7 @@ class userAuth extends Component {
 
             password:{
                 element:'input',
-                value: '',
+                value: 'kkkkkk',
                 containerConfig: {
                     className: 'passwordInputDiv'
                 },
